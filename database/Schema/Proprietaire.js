@@ -14,6 +14,6 @@ creche:{
     ref: 'Parent',
     required: true,
   },
-});
+},{ versionKey: false });
 
 module.exports = mongoose.model('Proprietaire', ProprietaireSchema,'Proprietaires');
