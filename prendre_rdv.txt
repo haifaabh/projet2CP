@@ -1,0 +1,8 @@
+//   try {
+//     const { parent_id, date, heure_debut, heure_fin, proprietaire_id } = req.body;
+//     const newRdv = await Rdv.create({ parent_id, date, heure_debut, heure_fin, proprietaire_id });
+//     res.status(200).send({ msg: 'votre rendez_vous est créer' });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Server error' });
+//   }
