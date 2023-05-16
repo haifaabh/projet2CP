@@ -22,5 +22,5 @@ etat: {
     type: mongoose.SchemaTypes.String,
     default: 'En attente',
       },    
-})
+},{ versionKey: false })
 module.exports = mongoose.model('Rdv', RdvSchema, 'Rdv');
