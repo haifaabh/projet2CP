@@ -1,11 +1,13 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
-import Recherche from '../Pages/Recherche';
-import logo from '../images/rrr.png';
+import React, { useEffect } from 'react'
+import { Link , useNavigate } from 'react-router-dom';
+import Recherche from '../Component/Recherche';
+// import logo from '../images/rrr.png';
 import {useState} from 'react';
 import axios from 'axios';
 
 const Filtres4 = ()=>{
+    const navigate = useNavigate();
+    const [creches , setCreches] = useState([]);
     const [ days, setDays ] = useState([]);
     const [showDays, setShowDays] = useState(false);
     const [showLangues, setShowLangues] = useState(false);
@@ -16,22 +18,29 @@ const Filtres4 = ()=>{
     const [ valeur, setValeur ] = useState("");
     const [ unité, setUnité ] = useState("");
     const [ Etab, setEtab ] = useState("");
+
   
+ 
     async function searchCreches() {
         try {
-          const response = await axios.post('api/invite/rechercher-criteres', {type_accueil:Acceuil,jours_accueil:days,type_établissement:Etab, age : {unite : unité , num : valeur},pédagogie:peda,langue:langues});
-          return response.data;
-        } catch (error) {
+               await axios.post('api/invite/rechercher-criteres', {type_accueil:Acceuil,jours_accueil:days,type_établissement:Etab, age : {unite : unité , num : valeur},pédagogie:peda,langue:langues})
+               .then(response => {
+                const crechesData = response.data;
+                setCreches(crechesData);
+                navigate('/Navigation', {state :{creches: crechesData}});
+                return response.data;
+              });
+            }catch (error) {
           console.error(error);
           return null;
         }
       }
 
-    const Age = {
-      'valeur':valeur,
-      'unité':unité,
-     }
-     
+     const handleAgeChange = (e) => {
+      const enteredAge = parseInt(e.target.value);
+      setValeur(enteredAge);
+    
+    };
      const handlePedaChange = (event) => {
       const newPeda = event.target.value;
       setPeda(newPeda);
@@ -39,10 +48,6 @@ const Filtres4 = ()=>{
     const handleAcceuilChange = (event) => {
       const newAcceuil = event.target.value;
       setAcceuil(newAcceuil);
-    };
-    const handleAgeChange = (event) => {
-      const newAge = event.target.value;
-      setPeda(newAge);
     };
     const handleEtabChange = (event) => {
       const newEtab = event.target.value;
@@ -107,12 +112,7 @@ const Filtres4 = ()=>{
       setShowPeda(false);
       setShowAge(false);
     };
-    const handleUnitéChange = (event) => {
-      setUnité(event.target.value);
-    };
-    const handleValeurChange = (event) => {
-      setValeur(event.target.value);
-    };
+
     const [ langues, setLangues ] = useState([]);
     const Days = [
         "Dimanche",
@@ -125,7 +125,7 @@ const Filtres4 = ()=>{
       ]
       const Langues = [
         "Arabe",
-        "Francais",
+        "Français",
         "Anglais",
         "Kabyle",
         "Espagnol"
@@ -134,10 +134,6 @@ const Filtres4 = ()=>{
       const [ Acceuil, setAcceuil ] = useState("");
       const [ peda, setPeda ] = useState("");
       
-      const Unité = [
-        "Mois",
-        "Ans"
-      ]
       const SelectDays = ( day ) =>{
         let test = days;
         if ( test.includes( day ) ){
@@ -167,6 +163,7 @@ const Filtres4 = ()=>{
         }
         setLangues(test);
       }
+
     return (
         <div>
         <h className='flex top-[80px] left-[500px] font-[Montserrat] text-black text-sm'>Si vous souhaitez changer la localisation</h>
@@ -183,7 +180,7 @@ const Filtres4 = ()=>{
         <button className='font-[Montserrat] text-base text-[#094076] border-none cursor-pointer left-[13px] top-[360px] absolute' onClick={handleButtonClickB}>Langues</button>
         <button className='font-[Montserrat] text-base text-[#094076] border-none cursor-pointer left-[13px] top-[400px] absolute' onClick={handleButtonClickF}>Age d’accueil </button>
 
-        <img src={logo} alt="" className='w-[68px] h-[120px] absolute top-[20px] left-[14px]' />
+        {/* <img src={logo} alt="" className='w-[68px] h-[120px] absolute top-[20px] left-[14px]' /> */}
       </div>
       
       <div className='w-[1105px] h-[700px] bg-[#99BFE4] border-none absolute right-[0px] top-[0px] left-[250px] flex justify-center'>
@@ -201,7 +198,7 @@ const Filtres4 = ()=>{
                 )
               })
             }
-            <button onClick={()=>{console.log('Etab:', days)}} >Valider</button>
+            <button onClick={()=>{console.log('jours:', days)}} >Valider</button>
           </div>
      
         )}
@@ -266,7 +263,7 @@ const Filtres4 = ()=>{
           <option value="Freinet">Freinet</option>
         </select>
       </div>
-      <button onClick={()=>{console.log('Age:', peda)}} >Valider</button>
+      <button onClick={()=>{console.log('peda:', peda)}} >Valider</button>
       </div>
       )}
       
@@ -275,30 +272,24 @@ const Filtres4 = ()=>{
       <div className='relative'> 
       <div className='flex items-center p-8'>
       {/* HNA DINA<3  */}
-      <select className='block border p-8 rounded-lg bg-[#D9D9D9] appearance-none text-center focus:bg-[#FFB1A6]'onChange={handleAgeChange} value={Age}>
-      <option value="0">--- Age ---</option>
-      <option value="3 mois">3 mois</option>
-      <option value="4 mois">4 mois</option>
-      <option value="5 mois">5 mois</option>
-      <option value="6 mois">6 mois</option>
-      <option value="7 mois">7 mois</option>
-      <option value="8 mois">8 mois</option>
-      <option value="9 mois">9 mois</option>
-      <option value="10 mois">10 mois</option>
-      <option value="11 mois">11 mois</option>
-      <option value="1 an">1 ans</option>
-      <option value="2 ans">2 ans</option>
-      <option value="2 ans">3 ans</option>
-      <option value="2 ans">4 ans</option>
-      <option value="2 ans">5 ans</option>
-      <option value="6 ans">6 ans</option>
-    </select>
-                 </div>
-                 <button onClick={()=>{console.log(Age)}} >Valider</button>
-                 <Link to='/Navigation'>
-                <button onClick={searchCreches}>Rechercher</button> </Link>   
-             </div>
+      <p className="text-1xl  border-b-2 border-gray-300 pb-2 mb-4">
+            <a className="font-semibold">Âge d’accueil : </a>
+              <input className="black-text border-transparent focus:outline-none focus:ring-0 font-regular" type="number" value={valeur}  onChange={handleAgeChange} />
+  <select
+  className=' block w-full border p-2 rounded-2xl bg-[#99BFE4] appearance-none text-center focus:bg-gray'  onChange={(e) => setUnité(e.target.value)}>
+<option value="0"> unite </option>
+    <option value="ans">ans</option>
+    <option value="mois">mois</option>
+</select>
+            </p>
+              
+                 <Link to = "/Navigation">
+                <button onClick={searchCreches}>Rechercher</button>     
                  
+                
+            </Link> 
+            </div>
+              </div>   
                  )}
                  </div>
     </div>
