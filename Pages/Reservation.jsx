@@ -6,17 +6,13 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 
-const Reservation = ({ onPlusDinfoclick, onRendezvousClick }) => {
+const Reservation = ({ onPlusDinfoclick, onRendezvousClick,onAnnulerClick,id }) => {
 
   const initialValue = dayjs('2023-04-17');
   const [isLoading, setIsLoading] = React.useState(false);
   const [selectedDate, setSelectedDate] = useState(initialValue);
-  const [nomValue, setNomValue] = useState("");
   const [ageValue, setAgeValue] = useState("");
-  // const { id } = useParams();
-  const id = "63f910357b55d68c6d3ef109";
 
   const handleAgeChange = (event) => {
     event.preventDefault();
@@ -28,24 +24,15 @@ const Reservation = ({ onPlusDinfoclick, onRendezvousClick }) => {
     setSelectedDate(date);
   };
 
-
-//   const handleConfirmClick = () => {
-//     console.log(selectedDate.format('YYYY-MM-DD'));
-//     const number = parseInt(ageValue);
-//     const unit = ageValue.includes("mois") ? "mois" : "annee";
-//     console.log(`Age: number: ${number}, unity: ${unit}`);
-//   };
-
   const handleConfirmClick = (event) => {
     event.preventDefault();
     const nom = document.querySelector('input[name="nom"]').value;
-    console.log(nom);
+    console.log(selectedDate.format('YYYY-MM-DD'));
     const number = parseInt(ageValue);
     const unit = ageValue.includes("mois") ? "mois" : "ans";
     console.log(typeof number);
     console.log(unit);
-    axios.post(`/api/parentRoute/reserver/${id}`, {
-        // date: selectedDate.format('YYYY-MM-DD'),
+    axios.post(`/api/parent/reserver/${id}`, {
         date: selectedDate.toISOString().substr(0, 10),
         enfants: {
             prenom: nom,
@@ -53,7 +40,7 @@ const Reservation = ({ onPlusDinfoclick, onRendezvousClick }) => {
             unite: unit
         }
     })
-    
+
       .then(response => {
           console.log(response.data);
           alert('votre reservation est créée!');
@@ -66,8 +53,8 @@ const Reservation = ({ onPlusDinfoclick, onRendezvousClick }) => {
 
   return (
     <div className=' relative flex justify-between top-4'>
-      <div className='absolute mx-10 h-12 w-[145vh] rounded-xl bg-[#99BFE4] flex justify-end mt-6'>
-        <button className='mr-4 ml-4 font-semibold text-white z-10' onClick={onPlusDinfoclick}>Plus d'infos</button>
+     <div className='absolute mx-10 h-12 w-[145vh] rounded-xl bg-[#99BFE4] flex justify-end mt-6 z-10'>
+        <button className='mr-4 ml-4 font-semibold text-white' onClick={onPlusDinfoclick}>Plus d'infos</button>
         <button className='mr-4 ml-4 font-semibold text-white' onClick={onRendezvousClick}>Rendez-Vous</button>
       </div>
       <div className="absolute flex justify-between">
@@ -90,15 +77,14 @@ const Reservation = ({ onPlusDinfoclick, onRendezvousClick }) => {
           </div>
           <div className="w-1/2">
             <div className="ml-16">  
-            {/* pas touche ifsawen agi */}
-          <input className='block w-full border p-4 mb-3 mt-4 rounded-2xl  bg-[#99BFE4]  text-[#181818] selection:text-[#000000] active:text-[#000000] black-text ' type='text' placeholder='Nom' name='nom' />
+            <input className='block w-full border p-4 mb-3 mt-4 rounded-2xl  bg-[#99BFE4]  text-[#181818] selection:text-[#000000] active:text-[#000000] black-text ' type='text' placeholder='Prenom enfant' name='nom' />
           <div className='relative'>
   <input className='block w-full border p-4 mb-3 rounded-2xl bg-[#99BFE4] text-[#181818] selection:text-[#000000] active:text-[#000000] black-text' placeholder='Age' name='age'/>
   <select
   className='absolute inset-0 block w-full border p-4 rounded-2xl bg-[#99BFE4] appearance-none text-center focus:bg-gray'
   onChange={handleAgeChange}
 >
-<option value="0">- Select -</option>
+<option value="0">-Age de votre enfant-</option>
     <option value="3 mois">3 mois</option>
     <option value="4 mois">4 mois</option>
     <option value="5 mois">5 mois</option>
@@ -127,7 +113,7 @@ const Reservation = ({ onPlusDinfoclick, onRendezvousClick }) => {
           onClick={handleConfirmClick} >
           Confirmer
         </button>
-        <button className="border border-black rounded-2xl w-[100px] h-8">Annuler</button>
+        <button className="border border-black rounded-2xl w-[100px] h-8" onClick={onAnnulerClick}>Annuler</button>
       </div>
     </div>
   );
