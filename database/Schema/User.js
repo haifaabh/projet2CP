@@ -20,9 +20,6 @@ const ParentSchema = new mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     ref: 'Creche',
   }],
-  notifications: [{
-    type: String,
-  }],
   reservations: [{
     type: mongoose.SchemaTypes.ObjectId,
     ref: 'Creche',
@@ -38,7 +35,7 @@ const ParentSchema = new mongoose.Schema({
     type: String,
     default: 'parent'
   },
-});
+},{ versionKey: false });
 
 module.exports = mongoose.model('Parent', ParentSchema);
 
