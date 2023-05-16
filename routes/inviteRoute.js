@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// const {auth}=require('./auth');
 const Creche = require('../database/Schema/Creche');
 
 router.get('/role', (req, res) => {
@@ -19,22 +18,25 @@ router.post('/rechercher-lieu',async(req,res)=>{
     }
 });
 
+//Recherche selon les criteres 
 router.post('/rechercher-criteres',async (req,res)=>
 {
     let result;
-    const query= req.body;
+    const query= req.body; //recevoir le contenu de la requete de l'utilisateur
     if(query.type_accueil)
-    {
+    {//si il a choisi un type d'accueil : régulier ou occasionnel
+      console.log('accueil');
         try {
-            result = await Creche.find({type_accueil:query.type_accueil});
+            result = await Creche.find({type_accueil:query.type_accueil}); //récupérer les crèches qui vérifient ce critère
           } catch (err) {
             console.error(err);
           }
     }
-    if(query.jours_accueil)
+    if(query.jours_accueil.length !==0)
     {
       try 
       {
+        console.log('jours');
         if(!result)
         {
           result = await Creche.find({jours_accueil: {$all: query.jours_accueil}});
@@ -52,6 +54,7 @@ router.post('/rechercher-criteres',async (req,res)=>
     if(query.type_établissement)
     {
       try {
+        console.log('etab');
         if(!result)
         {
           result = await Creche.find({type_établissement : query.type_établissement});
@@ -65,8 +68,9 @@ router.post('/rechercher-criteres',async (req,res)=>
             console.error(err);
         }
     }
-    if(query.age)
+    if(query.age && query.age.unite && query.age.num)
     {
+      console.log('age');
       let ageMois;
       if(query.age.unite==='ans')
         ageMois= query.age.num*12;
@@ -89,6 +93,7 @@ router.post('/rechercher-criteres',async (req,res)=>
     if(query.pédagogie)
     {
       try {
+        console.log('peda');
         if(!result)
         {
           result = await Creche.find({pédagogie : query.pédagogie});
@@ -102,10 +107,11 @@ router.post('/rechercher-criteres',async (req,res)=>
             console.error(err);
         }
     }
-    if(query.langue)
+    if(query.langue.length)
     {
       try 
       {
+        console.log('langue');
         if(!result)
         {
           result = await Creche.find({langue: {$all: query.langue}});
@@ -120,10 +126,11 @@ router.post('/rechercher-criteres',async (req,res)=>
         console.error(err);
       }
     }
-
-    if(result.length === 0){
+    console.log(query);
+    if((result.length === 0)|| (!result)){console.log(result);
       return res.status(401).send('Pas de crèche trouvée');}
-    else {console.log(result);
+    else {
+      console.log(result);
       return res.status(200).send(result);}
 });
 
