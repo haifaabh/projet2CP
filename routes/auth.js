@@ -52,7 +52,7 @@ router.post('/inscrire_parent', async (request, response) => {
   }});
   
   router.post('/inscrire_proprietaire', async (request, response) => {
-    const {nom, localisation, gps,type_accueil,jours_accueil,type_etablissement,age_accueil,uniteMin,uniteMax,note_evaluation,pedagogie,langue,capacite_accueil,disponibilite_places,tel,avis,horaire,img,code}=request.body;
+    const {nom, localisation, gps,type_accueil,jours_accueil,type_établissement,age_accueil,note_évaluation,pédagogie,langue,capacité_accueil,disponibilité_places,tél,avis,horaire,img,code}=request.body;
      try{ 
       const parent = await User.findById(request.session.user._id);
       if (!parent) {
@@ -72,7 +72,7 @@ age_accueil.ageMin=age_accueil.ageMin*12;
               else
               age_accueil.ageMax=age_accueil.ageMax;
 
-      const creche_attente= await Creche_attente.create({nom, localisation, gps,type_accueil,jours_accueil,type_etablissement,age_accueil,note_evaluation,pedagogie,langue,capacite_accueil,disponibilite_places,tel,avis,horaire,img,code})
+      const creche_attente= await Creche_attente.create({nom, localisation, gps,type_accueil,jours_accueil,type_établissement,age_accueil,note_évaluation,pédagogie,langue,capacité_accueil,disponibilité_places,tél,avis,horaire,img,code})
       await creche_attente.save();
       console.log('Creche saved:', creche_attente);
       await parent.save();
