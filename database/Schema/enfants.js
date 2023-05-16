@@ -19,5 +19,5 @@ const enfantsSchema = new mongoose.Schema({
    required:false,
     }
 
-})
+},{ versionKey: false })
 module.exports = mongoose.model('enfants',enfantsSchema,'enfants');
