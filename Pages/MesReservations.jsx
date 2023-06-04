@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PurpleShape from '../assets/PurpleShape.png'
-import Sidebar from '../components/Sidebar'
+import Sidebar from '../Component/Sidebar'
 import axios from 'axios';
 import { Box, Grid } from '@mui/material';
 
@@ -10,7 +10,7 @@ const MesReservations = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('api/parentRoute/afficher_reservations');
+        const response = await axios.get('api/parent/afficher_reservations');
         setreservation(response.data);
       } catch (error) {
         console.error(error);
