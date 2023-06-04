@@ -117,7 +117,7 @@ objectFit: 'fill'
 </li>
 
                 <li>
-                  <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/aide">Aide</a>
+                  <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/Aide">Aide</a>
                 </li>
               </ul>
             </div>
@@ -193,7 +193,7 @@ objectFit: 'fill'
                     <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/profil">Mon compte</a>
                   </li>
                   <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/aide">Aide</a>
+                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/Aide/Aide">Aide</a>
                   </li>
                   <li>
                   <div class="flex items-center gap-4">
@@ -260,7 +260,7 @@ objectFit: 'fill'
                     <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/favoris">Mes favoris</a>
                   </li>
                   <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/aide">Aide</a>
+                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/Aide/Aide">Aide</a>
                   </li>
                   <li>
                   <div class="flex items-center gap-4">
@@ -318,12 +318,22 @@ objectFit: 'fill'
               <div class={`md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[9%] md:w-auto w-full flex items-center px-5 md:px-20 ${isOpen ? 'block' : 'hidden md:block'}`}>
                 <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
                   
+          
+                  <li>
+                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/Attente">Crèches en attente</a>
+                  </li>
+                  <li>
+                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/Crecheadmin">Crèches acceptées</a>
+                  </li>
                   <li>
                     <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/dashboard">Dashboard</a>
                   </li>
+            
                   <li>
                   <div class="flex items-center gap-4">
+                  <a href="Accueil">
                   <button  onClick={handleLogout} class="text-black font-semibold py-2  hover:text-[#ff614d] ">Déconnecter</button>
+                  </a>
                   <div class="">
                   <FiLogOut />
                   </div>
