@@ -95,7 +95,7 @@ const RendezVous = ({ onPlusDinfoclick, onReserverClick,onAnnulerClick ,id}) => 
         className={`bg-[#FFB1A6] rounded-2xl mr-10 ${isSmallScreen ? 'w-[20vh] ' : 'w-[16vh]'} h-8`} onClick={handleConfirmClick}>
         Confirmer
       </button>
-        <button className={`border border-black rounded-2xl ${isSmallScreen ? 'w-[20vh]' : 'w-[16vh]'} h-8`}  onClick={onAnnulerClick}>Annuler</button>
+        <button className={`border border-black rounded-2xl ${isSmallScreen ? 'w-[20vh]' : 'w-[16vh]'} h-8 z-10`}  onClick={onAnnulerClick}>Annuler</button>
       </div>
     </div>
   );
