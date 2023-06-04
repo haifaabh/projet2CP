@@ -67,6 +67,38 @@ router.get('/mes_rendezvous/en_attente',isProprietaire,async(req,res)=>
     }  
 });
 
+router.post('/mes_rendezvous/en_attente/accepter/:id' , async(req,res) =>
+{
+    try{
+      const rdv = await Rdv.findById(req.params.id);
+      if(!rdv)
+        return res.status(404).send('Rendez-vous non trouvé');
+      rdv.etat = "Acceptée";
+      await rdv.save();
+      res.status(200).send('Opération effectuée avec succès');
+    }catch(err)
+    {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.delete('/mes_rendezvous/en_attente/refuser/:id',async (req,res) =>
+{
+  try{
+    const rdv = await Rdv.findById(req.params.id);
+    if(!rdv)
+      return res.status(404).send('Rendez-vous non trouvé');
+    rdv.etat = "Refusée";
+    await rdv.save();
+    res.status(200).send('Opération effectuée avec succès');
+  }catch(err)
+  {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 router.get('/afficher_ma_creche',isProprietaire, async (req, res) => {
       const parentId = req.session.user._id;
       try {
