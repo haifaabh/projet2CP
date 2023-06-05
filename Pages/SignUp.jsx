@@ -29,7 +29,7 @@ import { useState, useEffect } from 'react'
     if (!isChecked) {
       // Navigate to Accueil page when isChecked is true
       // Replace '/accueil' with the desired URL for the Accueil page
-      window.location.href = '/accueil';
+      window.location.href = '/Login';
     } else {
       // Navigate to SignInCreche2 page when isChecked is false
       // Replace '/SignInCreche2' with the desired URL for the SignInCreche2 page
