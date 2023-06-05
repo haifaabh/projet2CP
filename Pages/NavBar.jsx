@@ -82,9 +82,13 @@ const handleLogout = () => {
   function renderNavbar() {
     if (userRole === 'guest' || !isLoggedIn) {
       return (
-        <header class="bg-white" style={{
+        <header class="bg-white w-[100%] mb-11" style={{
           boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+          position: 'fixed',
+          top: '0',
+          zIndex: '50',
           borderRadius: '4px'
+
         }}>
           <div class="flex justify-between items-center w-[92%] mx-auto h-20">
             
@@ -186,11 +190,14 @@ objectFit: 'fill'
     
               <div class={`md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[9%] md:w-auto w-full flex items-center px-5 md:px-20 ${isOpen ? 'block' : 'hidden md:block'}`}>
                 <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/accueil">Acceuil</a>
+                <li>
+                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/Accueil">Acceuil</a>
                   </li>
                   <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/profil">Mon compte</a>
+                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/MonCompteResponsable">Espace Responsable</a>
+                  </li>
+                  <li>
+                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/MonCompteParent">Espace Parent</a>
                   </li>
                   <li>
                     <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/Aide/Aide">Aide</a>
@@ -257,10 +264,10 @@ objectFit: 'fill'
                   </li>
 
                   <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/favoris">Mes favoris</a>
+                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/Favoris">Mes favoris</a>
                   </li>
                   <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/Aide/Aide">Aide</a>
+                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/Aide">Aide</a>
                   </li>
                   <li>
                   <div class="flex items-center gap-4">
