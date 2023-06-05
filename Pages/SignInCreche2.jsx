@@ -114,7 +114,7 @@ console.log(langues)
       console.log(response.data);
     console.log(typeof ageMax);
     console.log(typeof ageMin);
-    navigate('/accueil');
+    navigate('/Login');
     }
    
     catch (error) {
