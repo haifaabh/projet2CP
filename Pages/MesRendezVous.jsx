@@ -3,7 +3,7 @@ import PurpleShape from '../assets/PurpleShape.png'
 import Sidebar from '../components/Sidebar'
 import axios from 'axios';
 import { Box, Grid } from '@mui/material';
-
+import Navbar from './NavBar';
 
 const MesRendezVous = () => {
   const [Annuler, SetAnnuler] = useState(false);
@@ -32,12 +32,16 @@ const MesRendezVous = () => {
 
   }
   return (
-<div className="flex">
-  <div className="w-1/4">
-    <Sidebar />
-  </div>
+<div className=' flex flex-col gap-4'>
+      <Navbar />
+      <div className=' flex flex-row gap-4'>
+
+        <div className="hidden md:flex">
+            <Sidebar />
+        </div>
+
   <div className="h-[50vh] flex flex-wrap w-3/4 mt-7">
-  <img className='absolute left-[500px] top-[10px] w-[80px]' src={PurpleShape} alt="Forme violette" />
+  <img className='absolute left-[500px] top-[110px] w-[80px]' src={PurpleShape} alt="Forme violette" />
 
   {rdvWithCreche.map((rdv) => (
     <div className="relative w-[440px] h-[300px] bg-white rounded-2xl p-2 hover:bg-gray-50 shadow-lg mr-4 mt-6 mb-2">
@@ -63,6 +67,7 @@ const MesRendezVous = () => {
       </Grid>
     </div>
   ))}
+</div>
 </div>
 </div>
  )}
