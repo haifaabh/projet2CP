@@ -3,7 +3,7 @@ import Navbar from '../Pages/NavBar';
 import { Bar } from 'react-chartjs-2';
 import {Chart as ChartJS,Tooltip,Legend,CategoryScale,LinearScale,BarElement} from 'chart.js';
 import axios from 'axios';
-
+import  yellow  from '../images/yellow.png';
 const Dashboard = () => {
     const [creches, setCreches] = useState(null);
     const [crechesEnAttente, setCrechesEnAttente] = useState(null);
@@ -89,12 +89,12 @@ const data = {
                 </div>
             </div>
         </div>
-        <div className=' w-[33%] p-8 flex flex-col rounded-l-2xl shadow-lg'>
-            <div className='bg-[#99BFE4] h-1/2 mb-4 rounded-xl  shadow-lg'>
-                Total
-            </div>
+        <div className="w-[33%] p-8 flex flex-col rounded-l-2xl shadow-lg">
+  <div className=" h-1/2 mb-4 rounded-xl ">
+    <img src={yellow} alt="Yellow" />
+  </div>
+</div>
 
-        </div>
 
     </div>
     </div>
