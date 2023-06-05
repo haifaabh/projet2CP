@@ -158,5 +158,37 @@ router.get('/afficher_reservations_acceptees',isProprietaire, async (req, res) =
            res.status(500).send('Server Error');
          }
    });
+
+router.post('/mes_reservations/en_attente/accepter/:id' , async(req,res) =>
+{
+    try{
+      const reservation = await Reservation.findById(req.params.id);
+      if(!reservation)
+        return res.status(404).send('Reservation non trouvée');
+      reservation.etat = "Acceptée";
+      await reservation.save();
+      res.status(200).send('Opération effectuée avec succès');
+    }catch(err)
+    {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.delete('/mes_reservations/en_attente/refuser/:id',async (req,res) =>
+{
+  try{
+    const reservation = await Reservation.findById(req.params.id);
+    if(!reservation)
+      return res.status(404).send('Reservation non trouvée');
+    reservation.etat = "Refusée";
+    await reservation.save();
+    res.status(200).send('Opération effectuée avec succès');
+  }catch(err)
+  {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
   
 module.exports = router;
