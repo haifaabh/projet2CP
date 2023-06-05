@@ -20,7 +20,7 @@ import acc2 from '../assets/acc2.png'
 import Recherche from './Recherche';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
-
+import './style.css';
 //import acc3 from '../assets/acc3.png'
 
 const Accueil = () => {
@@ -67,15 +67,16 @@ const Accueil = () => {
   return (
     <div>
       <Navbar />
+     
       <section id="section1" className="h-[95vh] flex flex-col justify-start items-start ">
-      <div className=" flex flex-col justify-start items-start">
+    { /*  <div className=" flex flex-col justify-start items-start">
       <Recherche
         localisation={localisation}
         handleLocalisationChange={handleLocalisationChange}
         creches={creches}
         handleSearch={handleSearch}
       /> 
-      </div>
+  </div>*/}
   <div className="relative flex flex-col items-start justify-start left-9 ml-8">
 
     <h1 className="text-black font-[Montserrat] font-bold text-[35px] text-center sm:text-left">
@@ -94,15 +95,33 @@ const Accueil = () => {
   <img src={acc1} alt="" className ='absolute w-[240px] h-[240px] top-[90px] left-[888px]'/>
   {/* <img src={acc3} alt="" className ='absolute w-[150px] h-[150px] top-[390px] left-[999px]'/> */}
   <img src={acc2} alt="" className ='absolute w-[120px] h-[120px] top-[290px] left-[45%]'/>    
+  <div className=" absolute w-[600px] h-[120px] top-[330px] left-[68px] search-input">
+  <div className="rounded-full bg-[#D9D9D9] p-2 flex items-center justify-start">
+    <input
+      type="text"
+      placeholder="Refaire une recherche..."
+      value={localisation}
+      onChange={handleLocalisationChange}
+      className="bg-transparent outline-none w-full"
+    />
+    <span className="icon-rech">
+      <i className="fa-solid fa-magnifying-glass" style={{ color: '#000000' }}></i>
+    </span>
+  </div>
+</div>
+
+
 
   
     <div className=" relative flex flex-row mt-[8%] ">
-      <button className="bg-[#f7b1a8] rounded-[40px] hover:bg-[#f5988b] text-black border-none w-[210px] h-[50px] font-[Montserrat] font-bold text-[21px] mr-[12vh]" onClick={handleSearch}>
-        Consulter
-      </button>
+    <div className="flex justify-start">
+  <button className="bg-[#f7b1a8] rounded-[40px] hover:bg-[#f5988b] text-black border-none w-[210px] h-[50px] font-[Montserrat] font-bold text-[21px] mr-[24vh]" onClick={handleSearch}>
+    Consulter
+  </button>
+</div>
  
 
-    <button className="bg-[#99BFE4] rounded-[40px] hover:bg-[#57a3fb] border-none text-black ml-4 w-[210px] h-[50px] font-[Montserrat] font-bold text-[21px]">
+    <button className="bg-[#99BFE4] rounded-[40px] hover:bg-[#57a3fb] border-none text-black  w-[210px] h-[50px] font-[Montserrat] font-bold text-[21px] ml-[24vh] ">
       Filtrer
     </button>
   </div>
