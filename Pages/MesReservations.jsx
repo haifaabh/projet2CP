@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import PurpleShape from '../assets/PurpleShape.png'
-import Sidebar from '../Component/Sidebar'
+import Sidebar from '../components/Sidebar'
 import axios from 'axios';
+import Navbar from './NavBar';
 import { Box, Grid } from '@mui/material';
 
 const MesReservations = () => {
@@ -10,7 +11,7 @@ const MesReservations = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('api/parent/afficher_reservations');
+        const response = await axios.get('/api/parentRoute/afficher_reservations');
         setreservation(response.data);
       } catch (error) {
         console.error(error);
@@ -30,12 +31,15 @@ const MesReservations = () => {
     console.log(fullNameInput.value, nameCreche.value, DateRdv.value, HeureDebut.value, HeureFin.value);
   }
   return (
-<div className="flex">
-  <div className="w-1/4">
-    <Sidebar />
-  </div>
+    <div className=' flex flex-col gap-4'>
+    <Navbar />
+    <div className=' flex flex-row gap-4'>
+
+      <div className="hidden md:flex">
+          <Sidebar />
+      </div>
   <div className="h-[50vh] flex flex-wrap w-3/4 mt-7"> 
-  <img className='absolute left-[500px] top-[10px] w-[80px]' src={PurpleShape} alt="Forme violette" />
+  <img className='absolute left-[500px] top-[110px] w-[80px]' src={PurpleShape} alt="Forme violette" />
 {reservation.map((res) => (
   <div className="relative w-[440px] h-[300px] bg-white rounded-2xl p-2 hover:bg-gray-50 shadow-lg mr-4 mt-6 mb-2">
     <Grid container spacing={1}>
@@ -57,6 +61,7 @@ const MesReservations = () => {
       </Grid>
     </div>
   ))}
+</div>
 </div>
 </div>
  )}
