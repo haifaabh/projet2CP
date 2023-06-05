@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';    //import des différenttes icones, images et component utilisés
 import { Link as Link } from 'react-scroll';
 import Button from '@mui/material/Button';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -29,6 +29,7 @@ import arrowup from '../assets/arrowup.png'
 
 
 const Accueil = () => {
+  
   const [localisation, setLocalisation] = useState('');
   const [creches, setCreches] = useState([]);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -272,7 +273,7 @@ Consulter
 </button>
 </div>
 
-    <section id="section7" className=" flex flex-row justify-end">
+    <section id="section7" className=" flex flex-row justify-end"> 
       <Footer />
     </section>
   </div>
