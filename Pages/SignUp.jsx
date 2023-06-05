@@ -67,19 +67,18 @@ import { useState, useEffect } from 'react'
   return (
     <div className='flex flex-wrap '>
     
-        <div className={` w-full md:w-1/3 p-4 bg-[#FBEBAC] rounded ${isSmallScreen ? "h-[150px]" : "h-screen"}  order-1 md:order-1 flex justify-center items-center md:items-start relative`}>
+        <div className={` w-full md:w-1/3 p-4 bg-[#FBEBAC] rounded ${isSmallScreen ? "h-[28vh]" : "h-screen"}  order-1 md:order-1 flex justify-center items-center md:items-start relative`}>
           {/* Image ici */}
           <img className={`absolute ${isSmallScreen ? "top-0 left-0 h-[150px] w-[80px]" : "left-0 right-0 bottom-0 mx-auto"} mb-2 md:mb-2 h-${isSmallScreen ? "90" : "240"}px w-30 sm:h-[110px] sm:w-[10] md:w-30 md:h-[160px] lg:h-[240px] lg:w-30  md:3/4`} src={jouetImg} alt="Jouet" />
-          <img className='absolute left-0 right-0 bottom-0 mx-auto mb-2 md:mb-2 h-[110px] w-30 sm:h-[110px] sm:w-[10] md:w-30 md:h-[160px] lg:h-[240px] lg:w-30  md:3/4' src={jouetImg} alt="Jouet" />
           <img className='absolute left-7 top-0 h-[110px] w-[58px] ml-2 mt-2 hidden md:block' src={logoImg} alt="Logo" />
           <div className="absolute top-0 right-0 mt-2 mr-2 hidden md:block">
           </div>
           <div className={`${isSmallScreen ? "text-center" : "text-left"} mt-2 md:mt-[100px]`}>
-          <h1 className={`${isSmallScreen ? "text-[36px] mt-0" : "text-[30px]"} text-[#094076]  mt-2 font-bold mb-2 md:mb-2 px-4 md:px-6`}>INSCRIVEZ-VOUS</h1>    
-           <p className={`${isSmallScreen ? "text-[12px] mb-0" : "text-[12px] mb-4"} text-[#000000]  px-4 md:px-4 whitespace-pre-wrap  text-lg font-regular`}>Pour bénéficier de fonctionnalités avancées  pour la recherche de services de garde pour enfants. </p>  </div>
+          <h1 className={`${isSmallScreen ? "text-[5vh] mt-0" : "text-[30px]"} text-[#094076]  mt-2 font-bold mb-2 md:mb-2 px-4 md:px-6`}>INSCRIVEZ-VOUS</h1>    
+           <p className={`${isSmallScreen ? "text-[12px] mb-0 ml-[10vh]" : "text-[12px] mb-4"} text-[#000000]  px-4 md:px-4 whitespace-pre-wrap  text-lg font-regular`}>Pour bénéficier de fonctionnalités avancées  pour la recherche de services de garde pour enfants. </p>  </div>
 
         </div>
-        <div className='w-full p-8 mt-12 md:w-2/3 h-screen order-2 md:order-2 flex justify-center items-center lg:mt-[20px] mb-4'>
+        <div className='w-full p-8 mt- md:w-2/3 h-screen order-2 md:order-2 flex justify-center items-center lg:mt-[20px] mb-4'>
           <div className='flex flex-col items-center justify-center md:w-2/3 lg:w-2/3 mx-auto'>
            
            <form className='w-full' onSubmit={handleSubmit}>
