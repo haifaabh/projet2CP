@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import PurpleShape from '../assets/PurpleShape.png'
+import PurpleShape from '../assets/PurpleShape.png';
 import axios from 'axios'
-import Sidebar from '../components/Sidebar'
+import Sidebar from '../components/Sidebar';
+import Navbar from '../Pages/NavBar';
 
 
 const MonCompteParent = () => {
@@ -11,7 +12,7 @@ const MonCompteParent = () => {
   const [password, setPassword] = useState('');
 
   useEffect(async () => {
-    await axios.get('api/parent/parents')
+    await axios.get('api/parentRoute/parents')
       .then(res => {
         setUsername(res.data.username);
         setEmail(res.data.email);
@@ -26,7 +27,7 @@ const MonCompteParent = () => {
 
   const handleEnregistrer = () => {
     SetmodeEdition(false);
-    axios.put('api/parent/modifier_profil', {
+    axios.put('api/parentRoute/modifier_profil', {
       username,
       email,
       password
@@ -36,14 +37,20 @@ const MonCompteParent = () => {
   }
 
   return (
+    <div className=''>
+        <Navbar />
     <div className=' relative'>
+    <button className='absolute top-[50px] left-[1150px] m-2 text-[#094076] font-semibold underline' variant='outlined' onClick={ModifierEdition} >Modifier</button>
+
+    <div className="absolute  top-[10px]">
       <Sidebar />
-      <button className='absolute top-0 right-4 m-2 text-[#094076] font-semibold underline' variant='outlined' onClick={ModifierEdition} >Modifier</button>
-   <img className='absolute left-[500px] top-[30px] w-[80px]' src={PurpleShape} alt="Forme violette" />
-      <div className="absolute w-[453px] h-[400px] bg-white rounded-2xl p-2  hover:bg-gray-50 shadow-lg left-[333px] top-[70px]">
+
+      <div/>
+    { <img className='absolute left-[675px] top-[40px] w-[80px]' src={PurpleShape} alt="Forme violette" /> }
+      <div className="absolute w-[453px] h-[400px] bg-pink rounded-2xl p-2  hover:bg-gray-50 shadow-lg left-[500px] top-[75px]">
         
         <form className='ml-[10%] w-[300px]'> 
-        <label htmlFor="full-name" className="mt-10 block text-gray-500 text-8 mb-0">
+        <label htmlFor="full-name" className="mt-10 ml-4 block text-gray-700 text-8 mb-2">
         Nom complet
       </label>
       <input
@@ -52,9 +59,9 @@ const MonCompteParent = () => {
         id="full-name"
         value={username}
         onChange={e => setUsername(e.target.value)}
-        className="border-b border-purple-400 px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-      />
-              <label htmlFor="E-mail" className="mt-6 block text-gray-500 text-8 mb-0">
+        className=" bg-purple-200 px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent rounded-full"
+        />
+        <label htmlFor="E-mail" className="mt-10 ml-4 block text-gray-700 text-8 mb-2">
         E-mail
       </label>
       <input
@@ -63,27 +70,29 @@ const MonCompteParent = () => {
         id="E-mail"
         value={email}
         onChange={e => setEmail(e.target.value)}
-        className="border-b border-purple-400 px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+        className=" bg-purple-200 px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent rounded-full"
       />
-              <label htmlFor="mdp" className="mt-6 block text-gray-500 text-8 mb-0">
-        Mot de passe
-      </label>
+      <label htmlFor="mdp" className="mt-10 ml-4 block text-gray-700 text-8 mb-2">
+      Mot de passe
+    </label>
       <input
         readOnly={!modeEdition}
         type="password"
         id="mdp"
         value={password}
         onChange={e => setPassword(e.target.value)}
-        className="border-b border-purple-400 px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+        className=" bg-purple-200 px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent rounded-full"
       />
           </form> 
           {
             modeEdition && (
-              <button className='bg-[#AD98E9] w-24 h-10 text-white rounded-2xl absolute bottom-2 right-4 m-2' variant='outlined' onClick={handleEnregistrer} >Enregistrer</button>
+                <button className='bg-[#AD98E9] w-24 h-10 text-white rounded-2xl absolute bottom-2 right-4 m-2' variant='outlined' onClick={handleEnregistrer} >Enregistrer</button>
             )}
 
 
     </div>
+      </div>
+      </div>
       </div>
   )
 }
