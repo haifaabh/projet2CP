@@ -1,10 +1,11 @@
-
-
 import React, { useState, useEffect } from 'react';
-// import logoImg from '../images/logo5.png';
+ import logoImg from '../images/logo5.png';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const Days = [
   "Dimanche",
@@ -43,6 +44,7 @@ const SignInCreche2= () => {
   const [uniteMax, setuniteMax] = useState("");
   const [pedagogie, setPedagogie] = useState("");
   const [Localisation, setLocalisation] = useState("");
+  const navigate = useNavigate();
 
   
   const SelectDays = ( day ) =>{
@@ -95,10 +97,12 @@ console.log(langues)
   }
   const handleAgeMinChange = (e) => {
     const enteredAge =parseInt(e.target.value);
+    setAgeMin(enteredAge);
   };
 
   const handleAgeMaxChange = (e) => {
     const enteredAge = parseInt(e.target.value);
+    setAgeMax(enteredAge);
   
   };
  
@@ -110,6 +114,7 @@ console.log(langues)
       console.log(response.data);
     console.log(typeof ageMax);
     console.log(typeof ageMin);
+    navigate('/accueil');
     }
    
     catch (error) {
@@ -131,7 +136,7 @@ useEffect(() => {
     <div className='flex flex-wrap '>
       <div className='items-center w-full h-[1200px] md:w-1/3 p-4 bg-[#99BFE4] rounded order-1 md:order-1'>
         <div className="flex items-center justify-center md:justify-start">
-          {/* <img className='h-[90px] w-[110px] ml-5 mt-4 hidden md:block mt-4' src={logoImg} alt="Logo" /> */}
+          <img className='h-[90px] w-[110px] ml-5 mt-4 hidden md:block mt-4' src={logoImg} alt="Logo" />
         </div>
         <div className={`${isSmallScreen ? "text-center" : "text-left"} mt-2 md:mt-[100px]`}>
         <h1 className={`${isSmallScreen ? "text-[36px] mt-0" : "text-[30px]"} text-[#094076]  mt-2 font-bold mb-2 md:mb-2 px-4 md:px-6`}>FICHE DESCRIPTIVE</h1>    
@@ -239,8 +244,10 @@ useEffect(() => {
           
           </p>
           <p className="text-1xl font-bold text-center text-[#094076]">
-          <button type="submit" onClick={handleSubmit} >Valider</button>
-          </p>
+  <Link to="/Accueil">
+    <button type="submit" onClick={handleSubmit}>Valider</button>
+  </Link>
+</p>
         </div>
  </form>
       </div>
