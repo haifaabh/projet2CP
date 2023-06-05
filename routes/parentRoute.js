@@ -422,7 +422,7 @@ router.put('/modifier_enfant/:enfantId', isParentOrProprietaire,async (req, res)
 
 
 
-router.get('/afficher_enfant/:enfantId',isParentOrProprietaire, async (req, res) => {
+router.get('/afficher_enfant/:enfantId', async (req, res) => { 
   try {
     const enfantId = req.params.enfantId;
     const parent = await User.findOne({ _id: req.session.user._id });
@@ -430,7 +430,7 @@ router.get('/afficher_enfant/:enfantId',isParentOrProprietaire, async (req, res)
       return res.status(404).send('Parent non trouvé !');
     }
 
-    const enfant = await enfants.findOne({
+    const enfant = await Enfant.findOne({
       _id: enfantId,
       enfant_id: { $in: parent.enfants.map(enfant => enfant.enfant_id) } 
     });
