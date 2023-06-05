@@ -325,7 +325,6 @@ router.get('/enfants',isParentOrProprietaire,async(req,res)=>
   }
   const user = await User.findById(req.session.user).populate({
     path: 'enfants',
-    select: '-_id',
   });
   const enfants = user.enfants.map((enfs) => enfs.toObject());
   res.status(200).send(enfants);
