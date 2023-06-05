@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from 'react';
 // import logoImg from '../images/rrr.png';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 const InscriptionsAdmin= () => {
 const [isSmallScreen, setIsSmallScreen] = useState(false);
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
+const navigate = useNavigate();
+const [error, setError] = useState('');
+
+
 
 const handleSubmit = async (e) => {
     e.preventDefault();
     try {
         const response = await axios.post('/api/adminRoute/connecter_admin', { email, password });
         console.log(response.data);
+        navigate('/Dashboard');
       } catch (error) {
         console.log(error);
-        if (error.response.status === 400) {
-          console.log(error.response.data.msg);
-        } else if (error.response.status === 401) {
-          console.log(error.response.data.msg);
-        }
+        // Display error message received from the backend
+        setError(error.response.data.msg);
       }
-  };
+    };
+  
 
   useEffect(() => {
     setIsSmallScreen(window.innerWidth < 670);
@@ -55,11 +58,32 @@ const handleSubmit = async (e) => {
   <input className='block w-full border p-8 mb-3 rounded-lg  bg-[#e2e2e2]  text-[#181818] selection:text-[#000000] active:text-[#000000] black-text ' type='password' placeholder='Mot de passe' value={password} onChange={(e) => setPassword(e.target.value)}></input>    
             <button className={`flex justify-center bg-[#094076] text-[#ffffff] font-bold py-2 w-1/2 rounded-3xl mt-4 mb-4 ${isSmallScreen ? 'sm:text-sm' : 'text-base'}`}>Se connecter</button>
             </form> 
+            {error && (
+            <div className="error-box">
+              <p className="error-message">{error}</p>
+            </div>
+          )}
             </div>
 
         </div>
 
-    
+        <style>
+        {`
+        .error-box {
+          background-color: #00000;
+          color: #094076;
+          font-weight: bold;
+          padding: 10px;
+          border-radius: 4px;
+          margin-top: 10px;
+          text-align: center;
+        }
+
+        .error-message {
+          margin: 0;
+        }
+        `}
+      </style>
     </div> 
   );
 }
