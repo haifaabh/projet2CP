@@ -6,23 +6,26 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 function Navbar() {
-    function switchToParent() {
-        setUserRole('parent');
-      }
-      function switchToAdmin() {
-        setUserRole('parent');
-      }
+  // Fonctions de changement de rôle utilisateur
+  function switchToParent() {
+    setUserRole('parent');
+  }
+  
+  function switchToAdmin() {
+    setUserRole('parent'); 
+  }
 
-      function switchToGuest() {
-        setUserRole('guest');
-      }
-      function switchToResponsable() {
-        setUserRole('proprietaire');
-      }
+  function switchToGuest() {
+    setUserRole('guest');
+  }
+
+  function switchToResponsable() {
+    setUserRole('proprietaire');
+  }
+
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState('');
- 
 
   const handleLog = async () => {
     try {
@@ -37,15 +40,17 @@ function Navbar() {
 
   useEffect(() => {
     handleLog();
-    const Role = async() =>
-     { await axios
-      .get('/api/invite/role')
-      .then((res) => {
-        setUserRole(res.data['Role']);
-        console.log(userRole);
-      })
-      .catch((err) => console.error(err));}
-      Role();
+
+    const Role = async() => {
+      await axios
+        .get('/api/invite/role')
+        .then((res) => {
+          setUserRole(res.data['Role']);
+          console.log(userRole);
+        })
+        .catch((err) => console.error(err));
+    }
+    Role();
   }, []);
 
   const toggleMenu = () => {
@@ -56,22 +61,21 @@ function Navbar() {
     setUserRole(role);
   }
 
-
-const handleLogout = () => {
-  axios
-    .post('/api/auth/deconnecter', null, { withCredentials: true })
-    .then((response) => {
-      console.log(response.data); // Output: { message: 'Successfully logged out' }
-      setIsLoggedIn(false); // Update isLoggedIn state here
-      // Redirect the user to the login page or do something else
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
-
+  const handleLogout = () => {
+    axios
+      .post('/api/auth/deconnecter', null, { withCredentials: true })
+      .then((response) => {
+        console.log(response.data); // Affiche : { message: 'Déconnexion réussie' }
+        setIsLoggedIn(false); // Met à jour l'état isLoggedIn ici
+        // Redirige l'utilisateur vers la page de connexion ou effectue une autre action
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   function renderNavbar() {
+    // Si l'utilisateur est un invité ou n'est pas connecté
     if (userRole === 'guest' || !isLoggedIn) {
       return (
         <header class="bg-white" style={{
@@ -79,293 +83,178 @@ const handleLogout = () => {
           borderRadius: '4px'
         }}>
           <div class="flex justify-between items-center w-[92%] mx-auto h-20">
-            
-          <div class="flex items-center">
-          <a href="/accueil">
-<img class="w-16" src={Logo} alt="logo" style={{
-width: '33px',
-height: '60px',
-objectFit: 'fill'
-}} />
-</a>
+            <div class="flex items-center">
+              <a href="/accueil">
+                <img class="w-16" src={Logo} alt="logo" style={{
+                  width: '33px',
+                  height: '60px',
+                  objectFit: 'fill'
+                }} />
+              </a>
 
-          <div class="ml-5 text-[#FFB1A6] font-semibold text-xl font-bold hidden md:block">
-          Kiddy Creche
-        </div>
-          </div>
+              <div class="ml-5 text-[#FFB1A6] font-semibold text-xl font-bold hidden md:block">
+                Kiddy Creche
+              </div>
+            </div>
+
             <div class={`md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[9%] md:w-auto w-full flex items-center px-5 md:py-20 md:px-20 ${isOpen ? 'block' : 'hidden md:block'}`}>
-              <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
-              <li>
-              <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold " href="/accueil">Accueil</a>
-            </li>
-              
-                <li>
-                  <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/accueil#section2">Nos services</a>
-                </li>
-                <li>
-  <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/accueil#section3">
-    Qui sommes nous?
-  </a>
-</li>
-
-                <li>
-                  <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/aide">Aide</a>
-                </li>
+              <ul class="space-y-5 text-[#E83350] font-semibold text-xl font-bold md:flex items-center flex-col md:flex-row">
+                <li><Link to="/accueil" onClick={toggleMenu}>Accueil</Link></li>
+                <li><Link to="/contact" onClick={toggleMenu}>Contact</Link></li>
+                <li><Link to="/connexion" onClick={toggleMenu}>Connexion</Link></li>
+                <li><Link to="/inscription" onClick={toggleMenu}>Inscription</Link></li>
               </ul>
             </div>
-    
-            <div class="flex items-center gap-6">
-            {/* {isLoggedIn && userRole === 'guest' && (
-              // <div>
-              //   <button onClick={() => handleSwitchAccount('parent')} class="bg-[#FFB1A6] text-white font-semibold px-5 py-2 rounded-full border-b border-grey-800 hover:bg-[#FFC9C1] ">Parent</button>
-              // </div>
-            )} */}
 
-              <a href="/inscription">
-              <button
-                class="bg-[#FFB1A6] text-white font-semibold px-5 py-2 rounded-full border-b border-grey-800 hover:bg-[#FFC9C1]"
-                onClick={() => setIsLoggedIn(!isLoggedIn)}
-              >
-                Inscriptions
-              </button>
-              </a>
-              <a href="/">
-  <button
-    className="bg-white text-black font-semibold px-5 py-2 rounded-full  border-grey-800 "
-    onClick={() => setIsLoggedIn(!isLoggedIn)}
-  >
-    Connexion
-  </button>
-</a>
-
-        
-            {isOpen ? (
-              <a href="#menu" onClick={toggleMenu}>
-                <AiOutlineClose />
-              </a>
-            ) : (
-              <a href="#menu" onClick={toggleMenu} class="md:hidden">
-                <AiOutlineMenu />
-              </a>
-            )}
-          </div>
-          
+            <div class="md:hidden flex items-center">
+              {isOpen ? (
+                <AiOutlineClose class="text-[#E83350] cursor-pointer w-8 h-8" onClick={toggleMenu} />
+              ) : (
+                <AiOutlineMenu class="text-[#E83350] cursor-pointer w-8 h-8" onClick={toggleMenu} />
+              )}
+            </div>
           </div>
         </header>
       );
-    }  else if (userRole === 'proprietaire') {
-      return (
-        <>
-          <header class="bg-white" style={{
-            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-            borderRadius: '4px'
-          }}>
-            <nav2 class="flex  justify-between items-center w-[92%] mx-auto h-20">
-    
-            <div class="flex items-center">
-            <a href="/accueil">
-<img class="w-16" src={Logo} alt="logo" style={{
-width: '33px',
-height: '60px',
-objectFit: 'fill'
-}} />
-</a>
-
-            <div class="ml-5 text-[#FFB1A6] font-semibold text-xl font-bold hidden md:block">
-            Kiddy Creche
-          </div>
-            </div>
-    
-              <div class={`md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[9%] md:w-auto w-full flex items-center px-5 md:px-20 ${isOpen ? 'block' : 'hidden md:block'}`}>
-                <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/accueil">Accueil</a>
-                  </li>
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/compteRespo">Espace Responsable</a>
-                  </li>
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/compte">Espace Parent</a>
-                  </li>
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/aide">Aide</a>
-                  </li>
-                  <li>
-                  <div class="flex items-center gap-4">
-                  <a href="/accueil">
-                  <button  onClick={handleLogout} class="text-black font-semibold py-2  hover:text-[#ff614d] ">Déconnecter</button>
-                  </a>
-                  <div class="">
-                  <FiLogOut />
-                  </div>
-                  </div>
-                  </li>
-                </ul>
-              </div>
-    
-              <div class="flex items-center gap-6">
-    
-                {isOpen ? (
-                  <a href="#menu" onClick={toggleMenu}>
-                    <AiOutlineClose />
-                  </a>
-                ) : (
-                  <a href="#menu" onClick={toggleMenu} class="md:hidden">
-                    <AiOutlineMenu />
-                  </a>
-                )}
-              </div>
-    
-            </nav2>
-          </header>
-        </>
-      );
-    }else if (userRole === 'parent') {
-      return (
-        <>
-          <header class="bg-white" style={{
-            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-            borderRadius: '4px'
-          }}>
-            <nav2 class="flex  justify-between items-center w-[92%] mx-auto h-20">
-    
-            <div class="flex items-center">
-            <a href="/accueil">
-<img class="w-16" src={Logo} alt="logo" style={{
-width: '33px',
-height: '60px',
-objectFit: 'fill'
-}} />
-</a>
-
-            <div class="ml-5 text-[#FFB1A6] font-semibold text-xl font-bold hidden md:block">
-            Kiddy Creche
-          </div>
-            </div>
-    
-              <div class={`md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[9%] md:w-auto w-full flex items-center px-5 md:px-20 ${isOpen ? 'block' : 'hidden md:block'}`}>
-                <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/accueil">Acceuil</a>
-                  </li>
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/compte">Profil</a>
-                  </li>
-
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/favoris">Mes favoris</a>
-                  </li>
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/aide">Aide</a>
-                  </li>
-                  <li>
-                  <div class="flex items-center gap-4">
-                  <a href="/accueil">
-                  <button  onClick={handleLogout} class="text-black font-semibold py-2  hover:text-[#ff614d] ">Déconnecter</button>
-                  </a>
-                  <div class="">
-                  <FiLogOut />
-                  </div>
-                  </div>
-                  </li>
-                </ul>
-              </div>
-    
-              <div class="flex items-center gap-6">
-    
-                {isOpen ? (
-                  <a href="#menu" onClick={toggleMenu}>
-                    <AiOutlineClose />
-                  </a>
-                ) : (
-                  <a href="#menu" onClick={toggleMenu} class="md:hidden">
-                    <AiOutlineMenu />
-                  </a>
-                )}
-              </div>
-    
-            </nav2>
-          </header>
-        </>
-      );
     }
-    else if (userRole === 'admin') {
+
+    // Si l'utilisateur est connecté et a le rôle de parent
+    if (isLoggedIn && userRole === 'parent') {
       return (
-        <>
-          <header class="bg-white" style={{
-            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-            borderRadius: '4px'
-          }}>
-            <nav2 class="flex  justify-between items-center w-[92%] mx-auto h-20">
-    
-              <div class="flex items-center">
+        <header class="bg-white" style={{
+          boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+          borderRadius: '4px'
+        }}>
+          <div class="flex justify-between items-center w-[92%] mx-auto h-20">
+            <div class="flex items-center">
               <a href="/accueil">
-              <img class="w-16" src={Logo} alt="logo" style={{
-                width: '33px',
-                height: '60px',
-                objectFit: 'fill'
-              }} />
-            </a>
-            
-                <div class="ml-5 text-[#FFB1A6] font-semibold text-xl font-bold hidden md:block">
+                <img class="w-16" src={Logo} alt="logo" style={{
+                  width: '33px',
+                  height: '60px',
+                  objectFit: 'fill'
+                }} />
+              </a>
+
+              <div class="ml-5 text-[#FFB1A6] font-semibold text-xl font-bold hidden md:block">
                 Kiddy Creche
               </div>
+            </div>
 
+            <div class={`md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[9%] md:w-auto w-full flex items-center px-5 md:py-20 md:px-20 ${isOpen ? 'block' : 'hidden md:block'}`}>
+              <ul class="space-y-5 text-[#E83350] font-semibold text-xl font-bold md:flex items-center flex-col md:flex-row">
+                <li><Link to="/accueil" onClick={toggleMenu}>Accueil</Link></li>
+                <li><Link to="/planning" onClick={toggleMenu}>Planning</Link></li>
+                <li><Link to="/factures" onClick={toggleMenu}>Factures</Link></li>
+                <li><Link to="/profil" onClick={toggleMenu}>Profil</Link></li>
+                <li><FiLogOut class="text-[#E83350] cursor-pointer w-8 h-8" onClick={handleLogout} /></li>
+              </ul>
+            </div>
+
+            <div class="md:hidden flex items-center">
+              {isOpen ? (
+                <AiOutlineClose class="text-[#E83350] cursor-pointer w-8 h-8" onClick={toggleMenu} />
+              ) : (
+                <AiOutlineMenu class="text-[#E83350] cursor-pointer w-8 h-8" onClick={toggleMenu} />
+              )}
+            </div>
+          </div>
+        </header>
+      );
+    }
+
+    // Si l'utilisateur est connecté et a le rôle d'administrateur
+    if (isLoggedIn && userRole === 'admin') {
+      return (
+        <header class="bg-white" style={{
+          boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+          borderRadius: '4px'
+        }}>
+          <div class="flex justify-between items-center w-[92%] mx-auto h-20">
+            <div class="flex items-center">
+              <a href="/accueil">
+                <img class="w-16" src={Logo} alt="logo" style={{
+                  width: '33px',
+                  height: '60px',
+                  objectFit: 'fill'
+                }} />
+              </a>
+
+              <div class="ml-5 text-[#FFB1A6] font-semibold text-xl font-bold hidden md:block">
+                Kiddy Creche
               </div>
-    
-              <div class={`md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[9%] md:w-auto w-full flex items-center px-5 md:px-20 ${isOpen ? 'block' : 'hidden md:block'}`}>
-                <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
-                  
-          
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/attente">Crèches en attente</a>
-                  </li>
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/adminCreches">Crèches acceptées</a>
-                  </li>
-                  <li>
-                    <a class="hover:text-grey-500 focus:text-[#ffa194] focus:font-bold" href="/dashboard">Dashboard</a>
-                  </li>
-            
-                  <li>
-                  <div class="flex items-center gap-4">
-                  <a href="/accueil">
-                  <button  onClick={handleLogout} class="text-black font-semibold py-2  hover:text-[#ff614d] ">Déconnecter</button>
-                  </a>
-                  <div class="">
-                  <FiLogOut />
-                  </div>
-                  </div>
-                  </li>
-                </ul>
+            </div>
+
+            <div class={`md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[9%] md:w-auto w-full flex items-center px-5 md:py-20 md:px-20 ${isOpen ? 'block' : 'hidden md:block'}`}>
+              <ul class="space-y-5 text-[#E83350] font-semibold text-xl font-bold md:flex items-center flex-col md:flex-row">
+                <li><Link to="/accueil" onClick={toggleMenu}>Accueil</Link></li>
+                <li><Link to="/utilisateurs" onClick={toggleMenu}>Utilisateurs</Link></li>
+                <li><Link to="/parametres" onClick={toggleMenu}>Paramètres</Link></li>
+                <li><Link to="/profil" onClick={toggleMenu}>Profil</Link></li>
+                <li><FiLogOut class="text-[#E83350] cursor-pointer w-8 h-8" onClick={handleLogout} /></li>
+              </ul>
+            </div>
+
+            <div class="md:hidden flex items-center">
+              {isOpen ? (
+                <AiOutlineClose class="text-[#E83350] cursor-pointer w-8 h-8" onClick={toggleMenu} />
+              ) : (
+                <AiOutlineMenu class="text-[#E83350] cursor-pointer w-8 h-8" onClick={toggleMenu} />
+              )}
+            </div>
+          </div>
+        </header>
+      );
+    }
+
+    // Si l'utilisateur est connecté et a le rôle de responsable
+    if (isLoggedIn && userRole === 'proprietaire') {
+      return (
+        <header class="bg-white" style={{
+          boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+          borderRadius: '4px'
+        }}>
+          <div class="flex justify-between items-center w-[92%] mx-auto h-20">
+            <div class="flex items-center">
+              <a href="/accueil">
+                <img class="w-16" src={Logo} alt="logo" style={{
+                  width: '33px',
+                  height: '60px',
+                  objectFit: 'fill'
+                }} />
+              </a>
+
+              <div class="ml-5 text-[#FFB1A6] font-semibold text-xl font-bold hidden md:block">
+                Kiddy Creche
               </div>
-    
-              <div class="flex items-center gap-6">
-    
-                {isOpen ? (
-                  <a href="#menu" onClick={toggleMenu}>
-                    <AiOutlineClose />
-                  </a>
-                ) : (
-                  <a href="#menu" onClick={toggleMenu} class="md:hidden">
-                    <AiOutlineMenu />
-                  </a>
-                )}
-              </div>
-    
-            </nav2>
-          </header>
-        </>
-      )
-                }
+            </div>
+
+            <div class={`md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[9%] md:w-auto w-full flex items-center px-5 md:py-20 md:px-20 ${isOpen ? 'block' : 'hidden md:block'}`}>
+              <ul class="space-y-5 text-[#E83350] font-semibold text-xl font-bold md:flex items-center flex-col md:flex-row">
+                <li><Link to="/accueil" onClick={toggleMenu}>Accueil</Link></li>
+                <li><Link to="/employes" onClick={toggleMenu}>Employés</Link></li>
+                <li><Link to="/factures" onClick={toggleMenu}>Factures</Link></li>
+                <li><Link to="/profil" onClick={toggleMenu}>Profil</Link></li>
+                <li><FiLogOut class="text-[#E83350] cursor-pointer w-8 h-8" onClick={handleLogout} /></li>
+              </ul>
+            </div>
+
+            <div class="md:hidden flex items-center">
+              {isOpen ? (
+                <AiOutlineClose class="text-[#E83350] cursor-pointer w-8 h-8" onClick={toggleMenu} />
+              ) : (
+                <AiOutlineMenu class="text-[#E83350] cursor-pointer w-8 h-8" onClick={toggleMenu} />
+              )}
+            </div>
+          </div>
+        </header>
+      );
+    }
   }
 
   return (
-    
-    <nav>
+    <div>
       {renderNavbar()}
-    </nav>
-    
+    </div>
   );
 }
 
