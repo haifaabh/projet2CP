@@ -4,16 +4,19 @@ const router = express.Router();
 // const {auth}=require('./auth');
 const Creche = require('../database/Schema/Creche');
 
+
+//get the user role for the acceuil page in frontend
 router.get('/role', (req, res) => {
-  let role = req.session.user?.Role || 'guest';
+  let role = req.session.user?.Role || 'guest'; // si l utilisateur est connecté ok sinn le role va etre guest
   res.status(200).json({ Role: role });
   console.log(role);
 });
 
+//rechercher les creches selon le lieu
 router.post('/rechercher-lieu',async(req,res)=>{
     const {localisation} = req.body;
-    const crecheDb = await Creche.find({localisation});
-    if (crecheDb.length === 0) {
+    const crecheDb = await Creche.find({localisation}); //trouver les creches avec la localisation
+    if (crecheDb.length === 0) {  // si la creche n existe pas
       return res.status(401).send({ msg: 'Aucune crèche trouvée !' });
     } else {
       console.log(crecheDb);
@@ -137,15 +140,17 @@ router.post('/rechercher-criteres',async (req,res)=>
       return res.status(200).send(result);}
 });
 
+//affichre les infos de la fiche descrptive d une creche
 router.get('/creches/:id',async (req,res)=>
 {
   const { id } = req.params;
   try {
-    const crecheDb = await Creche.findById(id).lean();
+    const crecheDb = await Creche.findById(id).lean(); //trouver la creche avec son id
     if (!crecheDb) {
       return res.status(404).send( 'Creche non trouvé!' );
     }
-    if(crecheDb.age_accueil.ageMin>=12)
+    //convertir l age accueil en ans si possible
+    if(crecheDb.age_accueil.ageMin>=12) 
     {
       crecheDb.age_accueil.ageMin /= 12;
       crecheDb.age_accueil.uniteMin="ans";
