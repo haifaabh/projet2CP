@@ -29,10 +29,12 @@ import arrowup from '../assets/arrow.png'
 
 
 const Accueil = () => {
+  // page d'accueil principale
   const [localisation, setLocalisation] = useState('');
   const [creches, setCreches] = useState([]);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const smoothScroll = (id) => {
+    //fonction assurant un smooth scroll des sections
     const element = document.getElementById(id);
     element.scrollIntoView({
       behavior: 'smooth',
@@ -52,10 +54,13 @@ const Accueil = () => {
   const navigate = useNavigate();
 
   const handleLocalisationChange = (event) => {
+    //gere la barre de localisation
+    
     setLocalisation(event.target.value);
   };
 
   const handleSearch = async () => {
+    //fonction pour effectuer la recherche par la barre de cette derniere
     try {
     axios.post('/api/invite/rechercher-lieu', { localisation }).then((data)=>{
       setCreches(data.data);
@@ -69,6 +74,7 @@ const Accueil = () => {
   };
 
   useEffect(() => {
+    //fonction pour la version responsive selon la taille de l'écran
     setIsSmallScreen(window.innerWidth < 670);
     window.addEventListener('resize', () => setIsSmallScreen(window.innerWidth < 670));
   }, []);
@@ -79,6 +85,7 @@ const Accueil = () => {
     <Navbar />
     <div className="absolute top-[130px] left-0 mr-0 "> 
     <section id="section1" className=" h-[80vh] w-full flex flex-col justify-start top-[150px] items-start">
+      {/* La première section contient la barre de recherche ainsi que les deux boutons pour simple consultation ou filtrage */}
 <div className="relative z-5 flex flex-col  items-start justify-start  ml-[14vh]">
 
   <h1 className="text-black  font-bold text-[34px] top-[250px] text-center sm:text-left">
@@ -136,7 +143,7 @@ Consulter
 </section>
 
 <section id="section2" className={`${isSmallScreen ? "h-[80vh] justify-center items-center flex flex-col pb-[50vh]" : "h-[95vh] pb-10"} flex mt-[50vh]`}>
-
+      {/* La 2eme section contient un résumé de nos plus importantes fonctionnalites */}
       <div className={`${isSmallScreen ? "hidden" : "w-1/2 flex justify-center items-center"} `}>
         {!isSmallScreen && (
           <img className="h-[700px] w-[650px]" src={RoundBlue} alt="SouriantBleu" />
@@ -189,6 +196,7 @@ Consulter
 
 
     <section id="section3" className={`${isSmallScreen ? "w-[88vh]" : ""} h-[95vh] flex flex-col justify-center items-center my-20`}>
+      {/* La section3 est une section qui sommes définissant notre site */}
       <div className='relative '>
       <img  className={`${isSmallScreen ? " w-full h-[125vh]" : "w-[150vh] h-[140vh]"} mt-4 `} src={PinkBulle} alt='Bulle rose' />
       <div className={`${isSmallScreen ? "left-[8vh] top-[170px]" : "left-[25vh] top-[220px]"} absolute   font-regular`}>
@@ -225,6 +233,7 @@ Consulter
     </section>
 
     <section id="section4" className="w-full h-screen flex flex-row justify-center items-center mt-[15vh]">
+      {/* Cette section introduit des statistiques sur notre site web */}
      <div className='w-full h-[300px] bg-[#AD98E9] rounded-2xl relative'>
       <ul className={`${isSmallScreen ? "" : " space-x-[52vh]"} flex justify-center items-center mt-[10vh] text-white text font-semibold text-[1.25rem] `}>
         <li className={`${isSmallScreen ? "hidden" : ""} `}>Notre team</li>
@@ -259,6 +268,7 @@ Consulter
     </section>
 
     <section id="section6" className="h-screen flex flex-row justify-center items-center">
+      {/* Une section qui propose un guide en ligne pour nos utilisateurs */}
     <div className='h-[300px] bg-[#FDD313] rounded-2xl flex justify-between items-center'>
       <div className={`${isSmallScreen ? "hidden" : "w-1/4 flex flex-col justify-center items-center px-4 ml-4 text-center"} `}>
         <h1 className=' text-[#094076] font-bold text-2xl '>Guide en Ligne</h1>
@@ -277,6 +287,7 @@ Consulter
 </div>
 
     <section id="section7" className=" flex flex-row justify-end">
+      {/* footer */}
       <Footer />
     </section>
   </div>
