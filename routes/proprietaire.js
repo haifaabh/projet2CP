@@ -6,6 +6,7 @@ const Reservation = require('../database/Schema/Reservation');
 const Creche = require('../database/Schema/Creche');
 const Proprietaire = require('../database/Schema/Proprietaire');
 
+//pour verifier si utilisateur est un proprietaire afin de limiter les acces
 const isProprietaire = async (req, res, next) => {
   const proprietaire = req.session.user;
   if (!proprietaire || proprietaire.Role !== 'proprietaire') {
@@ -14,14 +15,15 @@ const isProprietaire = async (req, res, next) => {
   next();
 };
 
+//modifier les infos de la creche
 router.put('/creche/modifier',isProprietaire, async(req,res)=>
 {
     try 
     {
-        const proprio = await Proprietaire.findOne({parent : req.session.user});
+        const proprio = await Proprietaire.findOne({parent : req.session.user});  //trouver l utilisateur dans la bdd
         const crecheId = proprio.creche;
         const crecheData = req.body;
-        const crecheDb = await Creche.findByIdAndUpdate(crecheId,crecheData,{
+        const crecheDb = await Creche.findByIdAndUpdate(crecheId,crecheData,{ //trouver la creche et la modifier
             new: true,
             runValidators: true,
           });
@@ -37,12 +39,13 @@ router.put('/creche/modifier',isProprietaire, async(req,res)=>
     }
 });
 
+//afficher la liste des rendez vous acceptes par ce proprietaire
 router.get('/mes_rendezvous/acceptes',isProprietaire,async(req,res)=>
 {
     try{
         const proprio = await Proprietaire.findOne({parent : req.session.user});
         const crecheId=proprio.creche;
-        const rdvsAcc = await Rdv.find({ creche_id: crecheId, etat: "Acceptée" });  
+        const rdvsAcc = await Rdv.find({ creche_id: crecheId, etat: "Acceptée" });   //verifier si l etat est acceptee
         res.status(200).send(rdvsAcc);
     }catch(err)
     {
@@ -51,12 +54,13 @@ router.get('/mes_rendezvous/acceptes',isProprietaire,async(req,res)=>
     }  
 });
 
+//afficher la liste des rendez vous en attentes 
 router.get('/mes_rendezvous/en_attente',isProprietaire,async(req,res)=>
 {
     try{
         const proprio = await Proprietaire.findOne({parent : req.session.user});
         const crecheId=proprio.creche;
-        const rdvsAtt = await Rdv.find({ creche_id: crecheId, etat: "En attente" });  
+        const rdvsAtt = await Rdv.find({ creche_id: crecheId, etat: "En attente" });  //verifier si l etat de la creche est en attente
         res.status(200).send(rdvsAtt);
     }catch(err)
     {
@@ -65,6 +69,7 @@ router.get('/mes_rendezvous/en_attente',isProprietaire,async(req,res)=>
     }  
 });
 
+//accepter un rendez vous parmis les rdv en attente
 router.post('/mes_rendezvous/en_attente/accepter/:id' , async(req,res) =>
 {
     try{
@@ -72,7 +77,7 @@ router.post('/mes_rendezvous/en_attente/accepter/:id' , async(req,res) =>
       if(!rdv)
         return res.status(404).send('Rendez-vous non trouvé');
       rdv.etat = "Acceptée";
-      await rdv.save();
+      await rdv.save();         // gardez le rdv dans la bdd avec etat acceptée
       res.status(200).send('Opération effectuée avec succès');
     }catch(err)
     {
@@ -81,6 +86,7 @@ router.post('/mes_rendezvous/en_attente/accepter/:id' , async(req,res) =>
     }
 });
 
+//refuser un rendez vous parmis les rdv en attente
 router.delete('/mes_rendezvous/en_attente/refuser/:id',async (req,res) =>
 {
   try{
@@ -88,7 +94,7 @@ router.delete('/mes_rendezvous/en_attente/refuser/:id',async (req,res) =>
     if(!rdv)
       return res.status(404).send('Rendez-vous non trouvé');
     rdv.etat = "Refusée";
-    await rdv.save();
+    await rdv.save();                      // gardez le rdv dans la bdd avec etat refusee
     res.status(200).send('Opération effectuée avec succès');
   }catch(err)
   {
@@ -97,14 +103,15 @@ router.delete('/mes_rendezvous/en_attente/refuser/:id',async (req,res) =>
   }
 });
 
+//afficher les infos de la creche liée a ce propriétaire
 router.get('/afficher_ma_creche',isProprietaire, async (req, res) => {
       const parentId = req.session.user._id;
       try {
-        if (!req.session.user) {
+        if (!req.session.user) { // verifier si l utilisateur est connecté
             return res.status(401).send('Utilisateur non authentifié');
           }
         const proprietaire = await Proprietaire.findOne({parent: parentId}).lean();
-        if (!proprietaire) {
+        if (!proprietaire) {  // verifier si l utilisateur n est pas un proprietaire
           return res.status(404).send('Vous n\'êtes pas autorisé à afficher cette crèche');
         }
         const crecheDb=await Creche.findById(proprietaire.creche).lean();
@@ -130,6 +137,8 @@ router.get('/afficher_ma_creche',isProprietaire, async (req, res) => {
       }
     });
      
+
+//afficher les reservation en attentes de sa creche
 router.get('/afficher_reservations_attentes',isProprietaire, async (req, res) => {
  try {
         const parentId = req.session.user._id;
@@ -143,6 +152,7 @@ router.get('/afficher_reservations_attentes',isProprietaire, async (req, res) =>
       }
 });
 
+//afficher les reservation acceptées de sa creche
 router.get('/afficher_reservations_acceptees',isProprietaire, async (req, res) => {
     try {
            const parentId = req.session.user._id;
@@ -156,6 +166,7 @@ router.get('/afficher_reservations_acceptees',isProprietaire, async (req, res) =
          }
    });
 
+//accepter une reservation en attente
    router.post('/mes_reservations/en_attente/accepter/:id' , async(req,res) =>
 {
     try{
@@ -172,6 +183,7 @@ router.get('/afficher_reservations_acceptees',isProprietaire, async (req, res) =
     }
 });
 
+// refuser une reservation en attente
 router.delete('/mes_reservations/en_attente/refuser/:id',async (req,res) =>
 {
   try{
