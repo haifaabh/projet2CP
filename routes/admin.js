@@ -6,6 +6,7 @@ const Creche_attente=  require('../database/Schema/Creche_attente');
 const user=  require('../database/Schema/User');
 const {hashPassword,comparePassword}=require('../utils/helpers');
 
+//verifier si lutilisateur est un admin
 const isAdmin = async (req, res, next) => {
   const admin = req.session.user;
   if (!admin || admin.Role !== 'admin') {
@@ -14,20 +15,21 @@ const isAdmin = async (req, res, next) => {
   next();
 };
 
+//connexion administrateur 
 router.post('/connecter_admin',async (request, response) => {
     const { email, password } = request.body;
-    if(!email||!password)
+    if(!email||!password) // verifier siemail et mot de passe sont presents
     {
       return response.status(400).send({ msg: 'email et mot de passe sont obligatoires' });
     }
-    const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ email }); //rechercher email dans la bdd dans le doc de admin
     if(!admin) {
       return response.status(401).send({ msg: 'utilisateur non trouvé' });
     }
-    const isValid=comparePassword(password,admin.password);
+    const isValid=comparePassword(password,admin.password); //comparer les mots de passe
     if (isValid) {
       console.log("autenthifié avec succès");
-      request.session.user = admin;
+      request.session.user = admin; // create session
       return response.status(200).send({ msg: 'Connecté avec succès' });
     }
     else {
@@ -36,6 +38,7 @@ router.post('/connecter_admin',async (request, response) => {
   
   });
 
+//calculer le nombre tolate des creches existants dans la bdd 
   router.get('/DashboardCreche',isAdmin, async (request, response) => {
     try {
       const count = await Creche.countDocuments();
@@ -46,6 +49,8 @@ router.post('/connecter_admin',async (request, response) => {
       response.status(500).json({ error: 'Server error' });
     }
   });
+
+//calculer le nombre des créches en attentes qui on pas accepter par admin
   router.get('/DashboardEnAttente',isAdmin,  async (request, response) => {
     try {
       const count = await Creche_attente.countDocuments();
@@ -57,6 +62,7 @@ router.post('/connecter_admin',async (request, response) => {
     }
   });
 
+//calculer le nombre des utilisateurs dans la bdd
   router.get('/DashboardUser',isAdmin,  async (request, response) => {
     try {
       const count = await user.countDocuments();
@@ -68,6 +74,7 @@ router.post('/connecter_admin',async (request, response) => {
     }
   });
 
+//afficher toutes les creches qui sont accepter par admin
   router.get('/afficher_toutes_creches',isAdmin, async (req,res)=>{
     try {
      const creches = await Creche.find().lean();
@@ -78,6 +85,7 @@ router.post('/connecter_admin',async (request, response) => {
       }
   });
 
+//afficher toutes les créches en attentes qui sont pas accepter par admin
  router.get('/afficher_toutes_creches_attentes',isAdmin, async (req,res)=>{
     try {
      const creches = await Creche_attente.find().lean();
@@ -88,6 +96,7 @@ router.post('/connecter_admin',async (request, response) => {
       }
   });
   
+//accepter une creche parmis les creches en attentes
   router.post('/creche_attente/:id',isAdmin,async(req,res)=>
   {
     const {accepte} = req.body;
@@ -109,9 +118,10 @@ router.post('/connecter_admin',async (request, response) => {
     }
 });
 
+//refuser une creche parmis les créches en attentes
   router.delete('/sup_creches/:crecheId',isAdmin,(req, res) => {
     const crecheId = req.params.crecheId;
-    Creche.findByIdAndDelete(crecheId)
+    Creche.findByIdAndDelete(crecheId) //trouver la creche et la supprimer
       .then((doc) => {
         if (!doc) {
           res.status(404).json({ message: 'La crèche avec l\'identifiant spécifié est introuvable.' });
