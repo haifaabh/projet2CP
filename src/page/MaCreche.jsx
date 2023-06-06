@@ -1,3 +1,4 @@
+//Dcalaration des import necessaires images et component
 import React, { useState, useEffect } from 'react';
 // import logoImg from '../images/logo5.png';
 import TextField from '@mui/material/TextField';
@@ -6,6 +7,7 @@ import Sidebar from '../Component/Sidebar/Sidebar';
 import Navbar70 from '../Component/NavBar';
 import axios from 'axios';
 
+//Déclaration des jours
 const Days = [
   "Dimanche",
   "Lundi",
@@ -68,7 +70,7 @@ const MaCreche= () => {
       console.error(error);
     }
   };
-  
+  //fonction pour envoyer les modifications et ou inscription de la crèche
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -97,6 +99,7 @@ const MaCreche= () => {
     }
   };
 
+  //valider les jours selectionnes
   const SelectDays = ( day ) =>{
     let test = days;
     if ( test.includes( day ) ){
