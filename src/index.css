@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (max-width: 768px) {
+    .flex-col {
+      margin-bottom: -40px; 
+    }
+    .flex-col li {
+      border-bottom: 1px solid rgb(168, 168, 168);
+      padding-bottom: 10px; 
+    }
+  }
+@layer base {
+    
+    html {
+        font-family: 'Montserrat', sans-serif;
+    }
+    
+}
+.overlay{
+  background-color: rgba(0,0,0,0.5);
+  position: fixed ;
+  width: 100%;
+  Height: 100%;
+    padding-bottom: 50px; /* adjust as needed */
+
+}
+
+.overlay2{
+  background-color: rgba(255, 255, 255,1);
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ModalBtn {
+  position:fixed;
+  top:40%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  padding: 12px 24px;
+}
+
+.Fichecontainer{
+  max-width: 600px;
+  width: 100%;
+  position: fixed;
+  top:40%;
+  left:50%;
+  transform-color: #ffffff;
+  box-shadow: 0px 0px 18px 0px rgba(0,0,0,0.75);
+}
+.overflow-y-scroll {
+  overflow-y: scroll;
+  left:50%;
+  height: 490px;
+  overflow-x: hidden;
+
+  scroll-margin-left: 20rem;
+  
+}
+.fixed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
