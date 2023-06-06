@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import logoImg from '../Component/logo.png';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-const InscriptionsAdmin= () => {
-const [isSmallScreen, setIsSmallScreen] = useState(false);
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
-const navigate = useNavigate();
-const [error, setError] = useState('');
+import React, { useState, useEffect } from 'react'; // Importation de React, useState et useEffect depuis la bibliothèque 'react'
+import logoImg from '../Component/logo.png'; // Importation de l'image du logo à partir d'un fichier local
+import axios from 'axios'; // Importation d'axios pour effectuer des requêtes HTTP
+import { useNavigate } from 'react-router-dom'; // Importation de useNavigate depuis 'react-router-dom'
 
+const InscriptionsAdmin = () => {
+  const [isSmallScreen, setIsSmallScreen] = useState(false); // Variable d'état pour détecter les petits écrans
+  const [email, setEmail] = useState(''); // Variable d'état pour stocker l'adresse e-mail
+  const [password, setPassword] = useState(''); // Variable d'état pour stocker le mot de passe
+  const navigate = useNavigate(); // Hook de navigation de 'react-router-dom'
+  const [error, setError] = useState(''); // Variable d'état pour stocker le message d'erreur
 
-
-const handleSubmit = async (e) => {
+  // Gestionnaire d'événement lors de la soumission du formulaire
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post('/api/admin/connecter_admin', { email, password });
-        console.log(response.data);
-        navigate('/dashboard');
-      } catch (error) {
-        console.log(error);
-        // Display error message received from the backend
-        setError(error.response.data.msg);
-      }
-    };
-  
+      const response = await axios.post('/api/admin/connecter_admin', { email, password }); // Envoi d'une requête POST à l'API backend avec l'adresse e-mail et le mot de passe
+      console.log(response.data); // Affichage de la réponse dans la console
+      navigate('/dashboard'); // Navigation vers la route '/dashboard' en cas de succès
+    } catch (error) {
+      console.log(error);
+      // Affichage du message d'erreur reçu depuis le backend
+      setError(error.response.data.msg);
+    }
+  };
 
+  // Effet utilisant le hook useEffect pour détecter les petits écrans lors du chargement initial et lors du redimensionnement de la fenêtre
   useEffect(() => {
     setIsSmallScreen(window.innerWidth < 670);
     window.addEventListener("resize", () => setIsSmallScreen(window.innerWidth < 670));
@@ -34,10 +34,7 @@ const handleSubmit = async (e) => {
   }, []);
 
   return (
-    
     <div className='flex flex-wrap '>
-    
-
       <div className='items-center w-full md:w-1/3 p-4 bg-[#094076] rounded order-1 md:order-1'>
         <div className="flex items-center">
           <img className='flex left-9 h-70 w-40 ml-2 mt-8 h-[80px] w-[80px] hidden md:block' src={logoImg} alt="Logo" />
@@ -54,20 +51,19 @@ const handleSubmit = async (e) => {
           <p className='mt-0 mb-4 font-bold text-[30px]  text-[#094076] text-left w-full'>Administrateur</p> 
           <p className='mt-0 mb-4 font-semibold text-[25px] text-left w-full'>Connexion</p> 
           <form className='w-full' onSubmit={handleSubmit}>
-  <input className='block w-full border p-8 mb-3 rounded-lg  bg-[#e2e2e2]  text-[#181818] selection:text-[#000000] active:text-[#000000] black-text' type='email' placeholder='E-mail ou numero de téléphone' value={email} onChange={(e) => setEmail(e.target.value)}></input>
-  <input className='block w-full border p-8 mb-3 rounded-lg  bg-[#e2e2e2]  text-[#181818] selection:text-[#000000] active:text-[#000000] black-text ' type='password' placeholder='Mot de passe' value={password} onChange={(e) => setPassword(e.target.value)}></input>    
+            <input className='block w-full border p-8 mb-3 rounded-lg  bg-[#e2e2e2]  text-[#181818] selection:text-[#000000] active:text-[#000000] black-text' type='email' placeholder='E-mail ou numéro de téléphone' value={email} onChange={(e) => setEmail(e.target.value)}></input>
+            <input className='block w-full border p-8 mb-3 rounded-lg  bg-[#e2e2e2]  text-[#181818] selection:text-[#000000] active:text-[#000000] black-text ' type='password' placeholder='Mot de passe' value={password} onChange={(e) => setPassword(e.target.value)}></input>
             <button className={`flex justify-center bg-[#094076] text-[#ffffff] font-bold py-2 w-1/2 rounded-3xl mt-4 mb-4 ${isSmallScreen ? 'sm:text-sm' : 'text-base'}`}>Se connecter</button>
-            </form> 
-            {error && (
+          </form>
+          {error && (
             <div className="error-box">
               <p className="error-message">{error}</p>
             </div>
           )}
-            </div>
-
         </div>
+      </div>
 
-        <style>
+      <style>
         {`
         .error-box {
           background-color: #00000;
@@ -84,8 +80,8 @@ const handleSubmit = async (e) => {
         }
         `}
       </style>
-    </div> 
+    </div>
   );
 }
 
-export default InscriptionsAdmin
+export default InscriptionsAdmin; // Exportation du composant InscriptionsAdmin
