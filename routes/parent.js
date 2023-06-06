@@ -36,7 +36,7 @@ router.get('/parents', async (req, res) => {
   }
 });
 
-router.put('/modifier_profil', async (req, res) => {  
+router.put('/modifier_profil', async (req, res) => {  // permet au parent de modifier son profil
   try {
     if (!req.session.user) {
       return res.status(401).send('Accès non autorisé !');
@@ -53,14 +53,14 @@ router.put('/modifier_profil', async (req, res) => {
   }
 });
 
-router.post('/prendre_rdv/:id', async (req, res) => {
+router.post('/prendre_rdv/:id', async (req, res) => {  // permet au parent de prendre un rendez-vous
   try {
    
     const creche = await Creche.findById(req.params.id);
     if (!creche) {
       return res.status(404).send('creche non trouvée !');
     }
-    // Create a new Rdv document with the extracted creche_id
+   
     const newRdv = new Rdv({
       parent_id: req.session.user._id,
       date: req.body.date,
@@ -71,7 +71,6 @@ router.post('/prendre_rdv/:id', async (req, res) => {
     
     //creer le doc dans la bdd
     const rdv=await Rdv.create(newRdv);
-    //await newRdv.save();
     res.status(201).send('votre rendez_vous est créer !');
   } catch (error) {
     console.error(error);
@@ -79,7 +78,7 @@ router.post('/prendre_rdv/:id', async (req, res) => {
   }
 });
 
-router.delete('/annuler_rdv/:id', async (req, res) => {
+router.delete('/annuler_rdv/:id', async (req, res) => { // permet au parent de prendre un rendez-vous
   try {
     if (!req.session.user) 
     {
@@ -102,7 +101,7 @@ router.delete('/annuler_rdv/:id', async (req, res) => {
   }
 });
 
-router.delete('/reservation/:id', async (req, res) => {   
+router.delete('/reservation/:id', async (req, res) => {   // annuler la reservation du parent
   try {
     const reservation = await Reservation.findById(req.params.id);
     if (!reservation) {
@@ -120,9 +119,9 @@ router.delete('/reservation/:id', async (req, res) => {
   }
 });
 
-router.post('/reserver/:id', async (req, res) => {
+router.post('/reserver/:id', async (req, res) => { // permet au parent de faire une reservation pour son enfant
   try {
-    // Find the creche document with the id
+    
     const creche = await Creche.findById(req.params.id);
     const nom=creche.nom;
     if (!creche) {
@@ -154,7 +153,7 @@ if (parent.enfants.includes(enfantId)){
     //creer le doc dans la bdd
     const reservation=await Reservation.create(newReservation);
     
-       // Update the parent document with the new reservation ID
+       
        const parent = await User.findOneAndUpdate(
         { _id: req.session.user._id},
         { $addToSet: { reservations: reservation._id } },
@@ -172,15 +171,15 @@ else {
   }
 });
 
-router.get('/afficher_reservations', async (req, res) => 
+router.get('/afficher_reservations', async (req, res) =>   // afficher toutes ses reservations
 {
   try {
-    // Get the parent ID from the session
+    
     const parentId = req.session.user._id;
-    // Find all reservations for the parent ID, selecting only the fields you want to include
+    
     const reservations = await Reservation.find({ parent_id: parentId }).select('date nom_creche enfants -_id');
 
-    // Send the reservations as a JSON response
+   
     res.json(reservations);
   } catch (err) {
     console.error(err);
@@ -190,7 +189,7 @@ router.get('/afficher_reservations', async (req, res) =>
 
 router.get('/afficher_Rdv', async (req, res) => {
   try {
-    // Get the parent ID from the session
+    // Obtenir l'identifiant du parent à partir de la session
     const parentId = req.session.user._id;
     const rdv = await Rdv.find({ parent_id: parentId }).select('date heure_debut heure_fin creche_id etat -_id');
 
@@ -212,7 +211,7 @@ router.get('/afficher_Rdv', async (req, res) => {
   }
 });
 
-router.post('/creches/:id/commenter',async (req,res)=>
+router.post('/creches/:id/commenter',async (req,res)=> // ajouter un commentaire à une crèche
 {
   if (!req.session.user) 
   {
@@ -237,7 +236,7 @@ router.post('/creches/:id/commenter',async (req,res)=>
   }
 });
 
-router.delete('/creches/:id/sup_commentaire/:index', async (req, res) => {
+router.delete('/creches/:id/sup_commentaire/:index', async (req, res) => { // supprimer le commentaire 
   const { id, index } = req.params;
   try {
     const crecheDb = await Creche.findById(id);
@@ -256,7 +255,7 @@ router.delete('/creches/:id/sup_commentaire/:index', async (req, res) => {
   }
 });
 
-router.get('/favoris',async (req,res)=>
+router.get('/favoris',async (req,res)=> 
 {
   if (!req.session.user) 
   {
@@ -267,7 +266,7 @@ router.get('/favoris',async (req,res)=>
   res.status(200).send(favorites);
 });
 
-router.post('/favoris/:id',async(req,res)=>
+router.post('/favoris/:id',async(req,res)=> // ajouter une crèche dans ses favoris 
 {
   try
   {
@@ -292,7 +291,7 @@ router.post('/favoris/:id',async(req,res)=>
   }
 });
 
-router.delete('/favoris/:id',async(req,res)=> {   
+router.delete('/favoris/:id',async(req,res)=> {   // supprimer la crèche des favoris
   try {
     if (!req.session.user) {
       return res.status(401).send('Accès non autorisé !!');
@@ -311,7 +310,7 @@ router.delete('/favoris/:id',async(req,res)=> {
     }
 });
 
-router.get('/enfants',async(req,res)=>
+router.get('/enfants',async(req,res)=> // afficher tous les enfants du parent
 {
   if (!req.session.user) 
   {
@@ -324,7 +323,7 @@ router.get('/enfants',async(req,res)=>
   res.status(200).send(enfants);
 });
 
-router.post('/enfants/ajouter',async(req,res)=>
+router.post('/enfants/ajouter',async(req,res)=> // permet au parent d'ajouter un enfant
 {
   if (!req.session.user) 
   {
@@ -342,7 +341,7 @@ router.post('/enfants/ajouter',async(req,res)=>
   res.status(200).send('Enfant ajouté avec succès !!');
 });
 
-router.delete('/enfants/:id', async (req, res) => 
+router.delete('/enfants/:id', async (req, res) =>  // permet au parent de supprimer son enfant
 {
   const  enfantId  = req.params.id;
   if (!req.session.user) {
@@ -359,7 +358,7 @@ router.delete('/enfants/:id', async (req, res) =>
   res.status(200).send('Enfant supprimé avec succès !!');
 });
 
-router.put('/modifier_enfant/:enfantId', async (req, res) => {
+router.put('/modifier_enfant/:enfantId', async (req, res) => { // modifier les attributs de l'enfant : prenom,age,unite
   try {
     const enfantId = req.params.enfantId;
     const parent = await User.findOne({ _id: req.session.user._id });
@@ -414,7 +413,7 @@ router.put('/modifier_enfant/:enfantId', async (req, res) => {
   }
 });
 
-router.get('/afficher_enfant/:enfantId', async (req, res) => {
+router.get('/afficher_enfant/:enfantId', async (req, res) => {  // afficher l'enfant du parent
   try {
     const enfantId = req.params.enfantId;
     const parent = await User.findOne({ _id: req.session.user._id });
