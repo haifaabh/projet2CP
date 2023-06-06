@@ -7,47 +7,66 @@ import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import axios from 'axios';
 
-const Reservation = ({ onPlusDinfoclick, onRendezvousClick,onAnnulerClick,id }) => {
+const Reservation = ({ onPlusDinfoclick, onRendezvousClick, onAnnulerClick, id }) => {
 
+  // Initialisation de la date sélectionnée avec une valeur par défaut
   const initialValue = dayjs('2023-04-17');
-  const [isLoading, setIsLoading] = React.useState(false);
+
+  // État pour gérer le chargement des données
+  const [isLoading, setIsLoading] = useState(false);
+
+  // État pour stocker la date sélectionnée
   const [selectedDate, setSelectedDate] = useState(initialValue);
+
+  // État pour stocker la valeur de l'âge de l'enfant
   const [ageValue, setAgeValue] = useState("");
 
+  // Gestionnaire de changement de l'âge de l'enfant
   const handleAgeChange = (event) => {
     event.preventDefault();
     const selectedOption = event.target.value;
     setAgeValue(selectedOption);
   }
 
+  // Gestionnaire de changement de la date sélectionnée
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
+  // Gestionnaire de clic sur le bouton de confirmation
   const handleConfirmClick = (event) => {
     event.preventDefault();
     const nom = document.querySelector('input[name="nom"]').value;
+
+    // Affichage de la date sélectionnée dans la console
     console.log(selectedDate.format('YYYY-MM-DD'));
+
+    // Conversion de la valeur de l'âge en nombre entier
     const number = parseInt(ageValue);
+
+    // Vérification de l'unité de l'âge (mois ou ans)
     const unit = ageValue.includes("mois") ? "mois" : "ans";
+
+    // Affichage de l'âge et de l'unité dans la console
     console.log(typeof number);
     console.log(unit);
+
+    // Envoi des données de réservation à l'API via une requête POST
     axios.post(`/api/parent/reserver/${id}`, {
         date: selectedDate.toISOString().substr(0, 10),
         enfants: {
             prenom: nom,
-            age:number,
+            age: number,
             unite: unit
         }
     })
-
       .then(response => {
           console.log(response.data);
-          alert('votre reservation est créée!');
+          alert('Votre réservation est créée !');
       })
       .catch(error => {
           console.error(error);
-          alert('Erreur dans la création de la reservation');
+          alert('Erreur dans la création de la réservation');
       });
   }
 
